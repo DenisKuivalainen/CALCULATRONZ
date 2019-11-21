@@ -21,7 +21,14 @@
   color: #09d3ac;
 }
 
-.row {
-  padding-left: 10% !important;
-  padding-right: 10% !important;
+.App {
+  padding: 10% !important;
+}
+
+.btn {
+  padding: 2% 1% !important;
+}
+
+.m {
+  font-size: 70%;
 }
