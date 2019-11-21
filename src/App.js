@@ -13,6 +13,7 @@ class App extends React.Component {
     this.backk = this.backk.bind(this);
     this.summm = this.summm.bind(this);
     this.msf = this.msf.bind(this);
+    this.mсf = this.mcf.bind(this);
   }
 
   handleUserInput = (e) => {
@@ -48,7 +49,7 @@ class App extends React.Component {
   summm() {
     var summ = this.state.eq;
     let sub =this.state.ch.substring(this.state.ch.length-1);
-    if(this.state.ch!=='9' && this.state.ch!=='8' && summ!=='' && sub!=='1' && sub!=='2' && sub!=='3') {
+    if(this.state.ch!=='9' && this.state.ch!=='8' && summ && sub!=='1' && sub!=='2' && sub!=='3') {
       summ=eval(summ);
       this.setState({eq: summ, ch: '9'});
     }
@@ -75,25 +76,25 @@ class App extends React.Component {
   msf() {
     const ms = this.state.eq;
     this.setState({mem: ms});
+    console.log('1')
+  }
+
+  mcf() {
+    this.setState({mem: ''})
   }
 
   dis1() {
-    var cc = this.state.ch;
-    cc = cc.substring(cc.length-1, cc.length-1)
     var res;
-    let a = ''
-    for (var i=0; i<cc.length; i++) {
-      a = a+cc.charAt(i)+'+'
-    }
+    if(this.state.ch!=='9'){res = 1}
+    else {res = 0};
+    return(res);
+  }
 
-    if(this.state.ch!=='9'
-     || eval(a+'0')!=='8'
-     ){res = 'false'}
-    else {res = 'true'}
-    return(res)
-
-    // if(this.state.ch === "9") {return('true')}
-    // else {return('false')}
+  dis2() {
+    var res;
+    if(this.state.ch!=='9'){res = 1}
+    else {res = 0};
+    return(res);
   }
 
   render() {
@@ -101,24 +102,24 @@ class App extends React.Component {
       <div className="App">
         <div class="row">
           <input name="result" type="text" class="col-sm-12 col-12 form-control" placeholder=""
-            value={this.state.eq}
+            value={this.state.eq} disabled
           />
         </div>
         <div class="row">
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button">MC</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button">MR</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mcf} disabled={!this.state.mem}>MC</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" >MR</button>
           <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button">M+</button>
           <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button">M-</button>
           <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.msf} disabled={this.dis1()}>MS</button>
-          <input name="result" type="text" class="col-sm-7 col-7 form-control" placeholder="Memory"
+          <input name="result" type="text" class="col-sm-7 col-7 form-control" placeholder="Memory" disabled
             value={this.state.mem}
           />
         </div>
         <div class="row">
           <button class="col-sm-6 col-6 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} onClick={this.rem}>C</button>
+          onClick={this.rem}>C</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} onClick={this.backk}>&larr;</button>
+          onClick={this.backk}>&larr;</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
           onClick={this.handleUserInput} value="/" id="1">/</button>
         </div>
