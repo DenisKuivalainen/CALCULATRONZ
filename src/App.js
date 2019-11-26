@@ -182,7 +182,7 @@ class App extends React.Component {
   }
 
   github() {
-    if(this.state.eq === '601/11*3') {
+    if(this.state.eq === '601/111*3') {
       window.open('https://github.com/DenisKuivalainen/Calculator-react/blob/master/src/App.js')
     }
   }
