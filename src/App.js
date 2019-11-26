@@ -13,9 +13,14 @@ class App extends React.Component {
     this.backk = this.backk.bind(this);
     this.summm = this.summm.bind(this);
     this.msf = this.msf.bind(this);
-    this.mсf = this.mcf.bind(this);
+    this.mmf = this.mmf.bind(this);
+    this.mpf = this.mpf.bind(this);
+    this.mcf = this.mcf.bind(this);
+    this.mrf = this.mrf.bind(this);
   }
 
+  //Записать нажатия кнопок
+  //Наверное надо было сделать эррэем, но я об этом подумал в конце, и исправлять уже не было времени.
   handleUserInput = (e) => {
     let sub =this.state.ch.substring(this.state.ch.length-1)+e.target.id
     if (sub==='80' || sub==='00' || sub==='10' || sub==='20' || sub==='30' || sub==='40' ||
@@ -46,19 +51,28 @@ class App extends React.Component {
     }
   }
 
+  //Вычислить сумму
   summm() {
-    var summ = this.state.eq;
-    let sub =this.state.ch.substring(this.state.ch.length-1);
-    if(this.state.ch!=='9' && this.state.ch!=='8' && summ && sub!=='1' && sub!=='2' && sub!=='3') {
-      summ=eval(summ);
-      this.setState({eq: summ, ch: '9'});
+    try{
+      var summ = this.state.eq;
+      let sub =this.state.ch.substring(this.state.ch.length-1);
+      if(this.state.ch!=='9' && this.state.ch!=='8' && summ && sub!=='1' && sub!=='2' && sub!=='3') {
+        summ=eval(summ) + '';
+        this.setState({eq: summ, ch: '9'});
+      }
+    } catch(error) {
+      if (window.confirm('An error caused. Contact the support. Press OK to reload.')) { 
+        window.location.reload();
+      }
     }
   }
 
+  //Очистить поле 
   rem() {
     this.setState({eq: '', ch: '8'});
   }
 
+  //Удалить один символ
   backk = (e) => {
     let sub =this.state.ch.substring(this.state.ch.length-1)
     if(sub!=='8') {
@@ -73,16 +87,78 @@ class App extends React.Component {
     }
   }
 
+  //Запись в память
   msf() {
     const ms = this.state.eq;
     this.setState({mem: ms});
-    console.log('1')
   }
 
+  //Отнять от памяти
+  mmf() {
+    if(this.state.mem === ''){
+      if(this.state.eq.substr(0,1) === '-') {
+        let memmin = this.state.eq.substr(1);
+        this.setState({mem : memmin});
+      } else {
+        let memmin ="-" + this.state.eq;
+        this.setState({mem : memmin});
+      }
+    } else{
+      if(this.state.eq.substr(0,1) === '-') {
+        let memmin = this.state.mem + '+' + this.state.eq.substr(1);
+        memmin = eval(memmin) + '';
+        this.setState({mem : memmin});
+      } else {
+        let memmin = this.state.mem + '-' + this.state.eq;
+        memmin = eval(memmin) + '';
+        this.setState({mem : memmin});
+      }
+    }
+  }
+
+  //Прибавить к памяти
+  mpf() {
+    if(this.state.mem !== ''){
+      let mempl = this.state.mem + "+" + this.state.eq;
+      mempl = eval(mempl) + '';
+      this.setState({mem : mempl});
+    }
+    else{
+      let mempl =this.state.eq
+      this.setState({mem : mempl});
+    }
+  }
+
+  //Очистить память
   mcf() {
-    this.setState({mem: ''})
+    this.setState({mem : ''});
   }
 
+  //Из памяти в поле счёта
+  //Реализованно крайне тупо, но работает... Сейчас 2:33 и мне влом это делать...
+  //Хотя это не сложно и я могу это сделать, но если работает и так, то зачем что то менять...
+  mrf() {
+    let char = this.state.mem;
+    let check = '';
+    for (let i = 0; i < char.length; i++) {
+      if (char[i] === "-" && eval(char)>=0) {check = check + '2'}
+      if (char[i] === ".") {check = check + '4'}
+      else {check = check + '0'}
+    };
+    if (this.state.mem.substring(0, 1) === '-' && this.state.ch.substring(this.state.ch.length-1) === '2') {
+      check = check.substring(1)
+      char = char.substring(1)
+      check = this.state.ch.substring(0, this.state.ch.length-1) + '3' + check;
+      char = this.state.eq.substring(0, this.state.eq.length-1) + '+' + char;
+    } else {
+      check = this.state.ch + check;
+      char = this.state.eq + char;
+    };
+    this.setState({ch : check, eq : char});
+  }
+
+
+  //Условие блокировки кнопок ввода в память
   dis1() {
     var res;
     if(this.state.ch!=='9'){res = 1}
@@ -90,26 +166,40 @@ class App extends React.Component {
     return(res);
   }
 
+  //Условие блокировки вывода из памяти
   dis2() {
     var res;
-    if(this.state.ch!=='9'){res = 1}
-    else {res = 0};
+    let pr =this.state.ch.substring(this.state.ch.length-1)
+    if(pr !== '0' && pr !== '4' && pr !== '9' && this.state.mem !== ''){res = 0}
+    else {res = 1};
     return(res);
+  }
+
+  //Число не начинается с 0
+  dis3() {
+    if(this.state.eq === '') {return('')}
+    else {return('0')}
+  }
+
+  github() {
+    if(this.state.eq === '601/11*3') {
+      window.open('https://github.com/DenisKuivalainen/Calculator-react/blob/master/src/App.js')
+    }
   }
 
   render() {
     return (
       <div className="App">
         <div class="row">
-          <input name="result" type="text" class="col-sm-12 col-12 form-control" placeholder=""
+          <input name="result" type="text" class="col-sm-12 col-12 form-control " placeholder=""
             value={this.state.eq} disabled
           />
         </div>
         <div class="row">
           <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mcf} disabled={!this.state.mem}>MC</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" >MR</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button">M+</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button">M-</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mrf} disabled={this.dis2()}>MR</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mpf} disabled={this.dis1()}>M+</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mmf} disabled={this.dis1()}>M-</button>
           <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.msf} disabled={this.dis1()}>MS</button>
           <input name="result" type="text" class="col-sm-7 col-7 form-control" placeholder="Memory" disabled
             value={this.state.mem}
@@ -157,10 +247,11 @@ class App extends React.Component {
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
            onClick={this.handleUserInput} value="." id="4">.</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="0" id="0">0</button>
+          onClick={this.handleUserInput} value={this.dis3()} id={this.dis3()}>0</button>
           <button class="col-sm-6 col-6 btn btn-outline-secondary " type="button" 
           onClick={this.handleUserInput} onClick={this.summm} id="9">=</button>
         </div>
+        {this.github()}
       </div>
     );
   }
