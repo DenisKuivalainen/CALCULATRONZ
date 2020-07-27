@@ -8,6 +8,7 @@ class App extends React.Component {
       eq: '',
       ch: '8',
       mem: '',
+      load: false,
     }
     this.rem = this.rem.bind(this);
     this.backk = this.backk.bind(this);
@@ -22,33 +23,11 @@ class App extends React.Component {
   //Записать нажатия кнопок
   //Наверное надо было сделать эррэем, но я об этом подумал в конце, и исправлять уже не было времени.
   handleUserInput = (e) => {
-    let sub =this.state.ch.substring(this.state.ch.length-1)+e.target.id
-    if (sub==='80' || sub==='00' || sub==='10' || sub==='20' || sub==='30' || sub==='40' ||
-        sub==='83' || sub==='03' || sub==='13' ||  sub==='43' || sub==='93' ||
-        sub==='01' || sub==='41' || sub==='91' ||
-        sub==='04' || sub==='14' || sub==='24' || sub==='34' ||
-        sub==='82' || sub==='02' || sub==='12' || sub==='42' || sub==='92')
-    {
-      const value = this.state.eq + e.target.value;
-      const nch =this.state.ch + e.target.id;
-      this.setState({eq: value, ch: nch});
-    }
-    if(sub==='22'){
-      const value = this.state.eq.substring(0, this.state.eq.length-1) + '+';
-      const nch =this.state.ch.substring(0, this.state.ch.length-1) + '3'
-      this.setState({eq: value, ch: nch});
-    }
-    if(sub==='90' || sub==='94'){
-      const value = e.target.value;
-      const nch =this.state.ch + e.target.id
-      this.setState({eq: value, ch: nch});
-    }
+    this.setState({ load: true });
 
-    if(sub==='11' || sub==='21' || sub==='31' || sub==='32'){
-      const value = this.state.eq.substring(0, this.state.eq.length-1) + e.target.value;
-      const nch =this.state.ch.substring(0, this.state.ch.length-1) + e.target.id;
-      this.setState({eq: value, ch: nch});
-    }
+    fetch("/btn?eq=" + this.state.eq + "&vl=" + e.target.value + "&ch=" + this.state.ch + "&id=" + e.target.id)
+      .then(response => response.json())
+      .then(data => this.setState({ eq: data.val, ch: data.nch, load: false }));
   }
 
   //Вычислить сумму
