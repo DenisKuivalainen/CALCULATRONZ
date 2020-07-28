@@ -66,7 +66,7 @@ function mpf(req) {
     let eq = summ(a, ch);
 
     let mempl = mm;
-    if(eq !== null) {
+    if(eq !== null && eq !== undefined) {
         if(mm !== ''){
             mempl = mm + "+" + eq;
             mempl = eval(mempl) + '';
@@ -85,7 +85,7 @@ function mmf(req) {
     let eq = summ(a, ch);
 
     let memmin = mm;
-    if(eq !== null){
+    if(eq !== null && eq !== undefined){
         if(mm === ''){
             if(eq.substr(0,1) === '-') {
             memmin = eq.substr(1);
@@ -112,16 +112,16 @@ function msf(req) {
     let mm = req.query.mm !== null ? (req.query.mm + "") : '';
 
     let fs = summ(eq, ch);
-    if(fs !== null) {
+    if(fs !== null && fs !== undefined) {
         return JSON.stringify({"val": eq, "nch": ch, "mem": fs});
     }    
 }
 
 function summ(eq, ch) {
     let sub = ch.substring(ch.length - 1);
-    if(ch !== '9' && ch !== '8' && summ && sub !== '1' && sub !== '2' && sub !== '3') {
+    if(ch !== '9' && ch !== '8' && eq && sub !== '1' && sub !== '2' && sub !== '3') {
         let summ = eq.replace('✛', '+');
-        summ = eval(summ) + '';
+        summ = Math.round(eval(summ)) + '';
 
         return summ;
     } else {
