@@ -20,30 +20,49 @@ class App extends React.Component {
     this.mrf = this.mrf.bind(this);
   }
 
-  //Записать нажатия кнопок
-  //Наверное надо было сделать эррэем, но я об этом подумал в конце, и исправлять уже не было времени.
-  handleUserInput = (e) => {
-    this.setState({ load: true });
+  request1(url, vl, id) {
+    if (!this.state.load) {
+      this.setState({ load: true });
 
-    fetch("/btn?eq=" + this.state.eq + "&vl=" + e.target.value + "&ch=" + this.state.ch + "&id=" + e.target.id)
+      fetch("/" + url +"?eq=" + this.state.eq + "&vl=" + vl + "&ch=" + this.state.ch + "&id=" + id)
+        .then(response => response.json())
+        .then(data => this.setState({ eq: data.val, ch: data.nch, load: false }));
+    }
+  }
+
+  request2(url) {
+    if (!this.state.load) {
+      this.setState({ load: true });
+
+      fetch("/" + url +"?eq=" + this.state.eq + "&ch=" + this.state.ch + "&mm=" + this.state.mem)
+        .then(response => response.json())
+        .then(data => this.setState({ eq: data.val, ch: data.nch, mem: data.mem, load: false }));
+    }
+  }
+
+  request3(url) {
+    fetch("/" + url +"?mm=" + this.state.mem + "&ch=" + this.state.ch)
       .then(response => response.json())
-      .then(data => this.setState({ eq: data.val, ch: data.nch, load: false }));
+      .then(data => {
+        return data.res;
+      });
+    
+  }
+
+  error() {
+    if (window.confirm('An error caused. Contact the support. Press OK to reload.')) { 
+      window.location.reload();
+    }
+  }
+
+  //Записать нажатия кнопок
+  handleUserInput = (e) => {
+    this.request1('btn', e.target.value, e.target.id);
   }
 
   //Вычислить сумму
   summm() {
-    try{
-      var summ = this.state.eq;
-      let sub =this.state.ch.substring(this.state.ch.length-1);
-      if(this.state.ch!=='9' && this.state.ch!=='8' && summ && sub!=='1' && sub!=='2' && sub!=='3') {
-        summ=eval(summ) + '';
-        this.setState({eq: summ, ch: '9'});
-      }
-    } catch(error) {
-      if (window.confirm('An error caused. Contact the support. Press OK to reload.')) { 
-        window.location.reload();
-      }
-    }
+    this.request1('summ', '', '');
   }
 
   //Очистить поле 
@@ -53,105 +72,43 @@ class App extends React.Component {
 
   //Удалить один символ
   backk = (e) => {
-    let sub =this.state.ch.substring(this.state.ch.length-1)
-    if(sub!=='8') {
-      if(sub==='9') {
-        this.setState({eq: '', ch: '8'});
-      }
-      else {
-        const back = this.state.eq.substring(0, this.state.eq.length - 1);
-        const nch = this.state.ch.substring(0, this.state.ch.length - 1);
-        this.setState({eq: back, ch: nch}); 
-      }
-    }
+    this.request1('back', '', '');
   }
 
   //Запись в память
   msf() {
-    const ms = this.state.eq;
-    this.setState({mem: ms});
+    this.request2('msf');
   }
 
   //Отнять от памяти
   mmf() {
-    if(this.state.mem === ''){
-      if(this.state.eq.substr(0,1) === '-') {
-        let memmin = this.state.eq.substr(1);
-        this.setState({mem : memmin});
-      } else {
-        let memmin ="-" + this.state.eq;
-        this.setState({mem : memmin});
-      }
-    } else{
-      if(this.state.eq.substr(0,1) === '-') {
-        let memmin = this.state.mem + '+' + this.state.eq.substr(1);
-        memmin = eval(memmin) + '';
-        this.setState({mem : memmin});
-      } else {
-        let memmin = this.state.mem + '-' + this.state.eq;
-        memmin = eval(memmin) + '';
-        this.setState({mem : memmin});
-      }
-    }
+    this.request2('mmf');
   }
 
   //Прибавить к памяти
   mpf() {
-    if(this.state.mem !== ''){
-      let mempl = this.state.mem + "+" + this.state.eq;
-      mempl = eval(mempl) + '';
-      this.setState({mem : mempl});
-    }
-    else{
-      let mempl =this.state.eq
-      this.setState({mem : mempl});
-    }
+    this.request2('mpf');
   }
 
   //Очистить память
   mcf() {
-    this.setState({mem : ''});
+    this.request2('mcf');
   }
 
   //Из памяти в поле счёта
-  //Реализованно крайне тупо, но работает... Сейчас 2:33 и мне влом это делать...
-  //Хотя это не сложно и я могу это сделать, но если работает и так, то зачем что то менять...
   mrf() {
-    let char = this.state.mem;
-    let check = '';
-    for (let i = 0; i < char.length; i++) {
-      if (char[i] === "-" && eval(char)>=0) {check = check + '2'}
-      if (char[i] === ".") {check = check + '4'}
-      else {check = check + '0'}
-    };
-    if (this.state.mem.substring(0, 1) === '-' && this.state.ch.substring(this.state.ch.length-1) === '2') {
-      check = check.substring(1)
-      char = char.substring(1)
-      check = this.state.ch.substring(0, this.state.ch.length-1) + '3' + check;
-      char = this.state.eq.substring(0, this.state.eq.length-1) + '+' + char;
-    } else {
-      check = this.state.ch + check;
-      char = this.state.eq + char;
-    };
-    this.setState({ch : check, eq : char});
+    this.request2('mrf');
   }
 
 
   //Условие блокировки кнопок ввода в память
   dis1() {
-    var res;
-    if(this.state.ch!=='9'){res = 1}
-    else {res = 0};
-    return(res);
+    return this.request3('dis1');
   }
 
   //Условие блокировки вывода из памяти
   dis2() {
-    var res;
-    let pr =this.state.ch.substring(this.state.ch.length-1)
-    if(pr !== '0' && pr !== '4' && pr !== '9' && this.state.mem !== ''){res = 0}
-    else {res = 1};
-    return(res);
+    return this.request3('dis2');
   }
 
   //Число не начинается с 0
@@ -190,7 +147,7 @@ class App extends React.Component {
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
           onClick={this.backk}>&larr;</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="/" id="1">/</button>
+          onClick={this.handleUserInput} value="dv" id="1">/</button>
         </div>
         <div class="row">
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
@@ -200,7 +157,7 @@ class App extends React.Component {
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
           onClick={this.handleUserInput} value="9" id="0">9</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="*" id="1">*</button>
+          onClick={this.handleUserInput} value="mp" id="1">*</button>
         </div>
         <div class="row">
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
@@ -210,7 +167,7 @@ class App extends React.Component {
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
           onClick={this.handleUserInput} value="6" id="0">6</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="-" id="2">-</button>
+          onClick={this.handleUserInput} value="mn" id="2">-</button>
         </div>
         <div class="row">
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
@@ -220,11 +177,11 @@ class App extends React.Component {
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
           onClick={this.handleUserInput} value="3" id="0">3</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="+" id="3">+</button>
+          onClick={this.handleUserInput} value="pl" id="3">✛</button>
         </div>
         <div class="row">
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-           onClick={this.handleUserInput} value="." id="4">.</button>
+           onClick={this.handleUserInput} value="dt" id="4">.</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
           onClick={this.handleUserInput} value={this.dis3()} id={this.dis3()}>0</button>
           <button class="col-sm-6 col-6 btn btn-outline-secondary " type="button" 
