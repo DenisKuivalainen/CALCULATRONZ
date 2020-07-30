@@ -29,6 +29,10 @@ app.get('/back', function(req, res) {
     res.send(back.back(req));
 });
 
+app.get('/rem', function(req, res) {
+    res.send(back.rem(req));
+});
+
 app.get('/msf', function(req, res) {
     res.send(mem.msf(req));
 });

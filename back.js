@@ -18,4 +18,8 @@ function back(req) {
     
 }
 
-module.exports = {back};
+function rem(req) {
+  return JSON.stringify({"val": '', "nch": '8'});
+}
+
+module.exports = {back, rem};

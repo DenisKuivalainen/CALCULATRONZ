@@ -14,6 +14,13 @@ function btn(req){
         )
     )
 
+    if(ch.substr(0, 1) === '9' && (id === '0' || id === '4')) {
+      eq = '';
+      ch = '8'
+    } else {
+      ch = 8 + ch.substr(1, ch.length-1);
+    }
+
     let val = eq;
     let nch = ch;
 

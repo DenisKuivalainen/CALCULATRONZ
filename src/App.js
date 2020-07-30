@@ -9,15 +9,8 @@ class App extends React.Component {
       ch: '8',
       mem: '',
       load: false,
+      dis1: '',
     }
-    this.rem = this.rem.bind(this);
-    this.backk = this.backk.bind(this);
-    this.summm = this.summm.bind(this);
-    this.msf = this.msf.bind(this);
-    this.mmf = this.mmf.bind(this);
-    this.mpf = this.mpf.bind(this);
-    this.mcf = this.mcf.bind(this);
-    this.mrf = this.mrf.bind(this);
   }
 
   request1(url, vl, id) {
@@ -44,62 +37,11 @@ class App extends React.Component {
     fetch("/" + url +"?mm=" + this.state.mem + "&ch=" + this.state.ch)
       .then(response => response.json())
       .then(data => {
+        if(url === 'dis1') {this.setState({dis1: data.res})};
         return data.res;
       });
     
   }
-
-  error() {
-    if (window.confirm('An error caused. Contact the support. Press OK to reload.')) { 
-      window.location.reload();
-    }
-  }
-
-  //Записать нажатия кнопок
-  handleUserInput = (e) => {
-    this.request1('btn', e.target.value, e.target.id);
-  }
-
-  //Вычислить сумму
-  summm() {
-    this.request1('summ', '', '');
-  }
-
-  //Очистить поле 
-  rem() {
-    this.setState({eq: '', ch: '8'});
-  }
-
-  //Удалить один символ
-  backk = (e) => {
-    this.request1('back', '', '');
-  }
-
-  //Запись в память
-  msf() {
-    this.request2('msf');
-  }
-
-  //Отнять от памяти
-  mmf() {
-    this.request2('mmf');
-  }
-
-  //Прибавить к памяти
-  mpf() {
-    this.request2('mpf');
-  }
-
-  //Очистить память
-  mcf() {
-    this.request2('mcf');
-  }
-
-  //Из памяти в поле счёта
-  mrf() {
-    this.request2('mrf');
-  }
-
 
   //Условие блокировки кнопок ввода в память
   dis1() {
@@ -131,63 +73,64 @@ class App extends React.Component {
             value={this.state.eq} disabled
           />
         </div>
-        <div class="row">
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mcf} disabled={!this.state.mem}>MC</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mrf} disabled={this.dis2()}>MR</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mpf} disabled={this.dis1()}>M+</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.mmf} disabled={this.dis1()}>M-</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={this.msf} disabled={this.dis1()}>MS</button>
+        {/* <div class="row">
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mcf')} disabled={!this.state.mem}>MC</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mrf')} disabled={this.dis2()}>MR</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mpf')} disabled={this.dis1()}>M+</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mmf')} disabled={this.state.dis1}>M-</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('msf')} disabled={this.state.dis1}>MS</button>
           <input name="result" type="text" class="col-sm-7 col-7 form-control" placeholder="Memory" disabled
             value={this.state.mem}
           />
-        </div>
+        </div> */}
         <div class="row">
           <button class="col-sm-6 col-6 btn btn-outline-secondary " type="button" 
-          onClick={this.rem}>C</button>
+          onClick={() => this.request1('rem', '', '')}>C</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.backk}>&larr;</button>
+          onClick={() => this.request1('back', '', '')}>&larr;</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="dv" id="1">/</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="dv" id="1">/</button>
         </div>
         <div class="row">
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="7" id="0">7</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="7" id="0">7</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="8" id="0">8</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="8" id="0">8</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="9" id="0">9</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="9" id="0">9</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="mp" id="1">*</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="mp" id="1">*</button>
         </div>
         <div class="row">
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-           onClick={this.handleUserInput} value="4" id="0">4</button>
+           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="4" id="0">4</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="5" id="0">5</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="5" id="0">5</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="6" id="0">6</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="6" id="0">6</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="mn" id="2">-</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="mn" id="2">-</button>
         </div>
         <div class="row">
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-           onClick={this.handleUserInput} value="1" id="0">1</button>
+           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="1" id="0">1</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="2" id="0">2</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="2" id="0">2</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="3" id="0">3</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="3" id="0">3</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value="pl" id="3">✛</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="pl" id="3">✛</button>
         </div>
         <div class="row">
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-           onClick={this.handleUserInput} value="dt" id="4">.</button>
+           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="dt" id="4">.</button>
           <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} value={this.dis3()} id={this.dis3()}>0</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value={this.dis3()} id={this.dis3()}>0</button>
           <button class="col-sm-6 col-6 btn btn-outline-secondary " type="button" 
-          onClick={this.handleUserInput} onClick={this.summm} id="9">=</button>
+          onClick={() => this.request1('summ', '', '')} id="9">=</button>
         </div>
         {this.github()}
+        <span class="label">by Godlike &#9733; 2020</span>
       </div>
     );
   }
