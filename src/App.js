@@ -84,49 +84,49 @@ class App extends React.Component {
           />
         </div> */}
         <div class="row">
-          <button class="col-sm-6 col-6 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-6 col-6 fap-i" type="button" 
           onClick={() => this.request1('rem', '', '')}>C</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-b" type="button" 
           onClick={() => this.request1('back', '', '')}>&larr;</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-b" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="dv" id="1">/</button>
         </div>
         <div class="row">
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="7" id="0">7</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="8" id="0">8</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="9" id="0">9</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-b" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="mp" id="1">*</button>
         </div>
         <div class="row">
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
            onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="4" id="0">4</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="5" id="0">5</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="6" id="0">6</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-b" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="mn" id="2">-</button>
         </div>
         <div class="row">
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
            onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="1" id="0">1</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="2" id="0">2</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="3" id="0">3</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-b" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="pl" id="3">✛</button>
         </div>
         <div class="row">
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
            onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="dt" id="4">.</button>
-          <button class="col-sm-3 col-3 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-3 col-3 fap-m" type="button" 
           onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value={this.dis3()} id={this.dis3()}>0</button>
-          <button class="col-sm-6 col-6 btn btn-outline-secondary " type="button" 
+          <button class="col-sm-6 col-6 fap-i" type="button" 
           onClick={() => this.request1('summ', '', '')} id="9">=</button>
         </div>
         {this.github()}

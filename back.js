@@ -3,7 +3,9 @@ function back(req) {
     let ch = req.query.ch !== null ? (req.query.ch + "") : '';
 
     let sub =ch.substring(ch.length-1)
-    if(sub!=='8') {
+    if(ch.substr(0, 1) === '9') {
+      return rem(req);
+    } else if(sub!=='8') {
       if(sub==='9') {
 
         return JSON.stringify({"val": '', "nch": '8'});
@@ -14,6 +16,8 @@ function back(req) {
 
         return JSON.stringify({"val": back, "nch": nch}); 
       }
+    } else {
+      return JSON.stringify({"val": eq, "nch": ch});
     }
     
 }
