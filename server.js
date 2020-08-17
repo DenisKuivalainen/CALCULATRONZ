@@ -5,8 +5,6 @@ const summ = require('./summ.js');
 const back = require('./back.js');
 const mem = require('./memory.js');
 const port = process.env.PORT || 8080;
-
-require('heroku-self-ping').default("https://mariadikki.herokuapp.com/");
  
 const app = express();
  
@@ -64,7 +62,7 @@ app.get('/dis2', function(req, res) {
 
 
 app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'server', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(port);
