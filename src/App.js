@@ -43,18 +43,18 @@ class App extends React.Component {
     
   }
 
-  //Условие блокировки кнопок ввода в память
-  dis1() {
+  // Block save to memory
+  disableMemorySave() {
     return this.request3('dis1');
   }
 
-  //Условие блокировки вывода из памяти
-  dis2() {
+  // Block return from memory
+  disableMemoryPaste() {
     return this.request3('dis2');
   }
 
-  //Число не начинается с 0
-  dis3() {
+  // Number not starts with 0
+  checkStartWithNull() {
     if(this.state.eq === '') {return('')}
     else {return('0')}
   }
@@ -75,8 +75,8 @@ class App extends React.Component {
         </div>
         {/* <div class="row">
           <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mcf')} disabled={!this.state.mem}>MC</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mrf')} disabled={this.dis2()}>MR</button>
-          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mpf')} disabled={this.dis1()}>M+</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mrf')} disabled={this.disableMemoryPaste()}>MR</button>
+          <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mpf')} disabled={this.disableMemorySave()}>M+</button>
           <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('mmf')} disabled={this.state.dis1}>M-</button>
           <button class="col-sm-1 col-1 btn btn-outline-secondary m" type="button" onClick={() => this.request2('msf')} disabled={this.state.dis1}>MS</button>
           <input name="result" type="text" class="col-sm-7 col-7 form-control" placeholder="Memory" disabled
@@ -125,12 +125,12 @@ class App extends React.Component {
           <button class="col-sm-3 col-3 fap-m" type="button" 
            onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value="dt" id="4">.</button>
           <button class="col-sm-3 col-3 fap-m" type="button" 
-          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value={this.dis3()} id={this.dis3()}>0</button>
+          onClick={(e) => this.request1('btn', e.target.value, e.target.id)} value={this.checkStartWithNull()} id={this.checkStartWithNull()}>0</button>
           <button class="col-sm-6 col-6 fap-i" type="button" 
           onClick={() => this.request1('summ', '', '')} id="9">=</button>
         </div>
         {this.github()}
-        <span class="label">by Godlike &#9733; 2020</span>
+        <span class="label">2020 &#9733; Godlike</span>
       </div>
     );
   }
